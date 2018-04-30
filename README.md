@@ -7,4 +7,4 @@ A WeChat Todo application use Redux under Wepy!<br>
 * npm install
 * wepy build --watch
 
-For more info clock here [Wepy](https://github.com/Tencent/wepy)
+For more info click here [Wepy](https://github.com/Tencent/wepy)
