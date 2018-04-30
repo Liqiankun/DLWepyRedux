@@ -6,7 +6,7 @@ export default class WXRequest {
     if (loading) {
       Tips.navLoading()
     }
-    let reqURL = 'http://192.168.1.103:5000/todos' + url
+    let reqURL = 'https://still-castle-28094.herokuapp.com/todos' + url
     return wepy.request({
       url: reqURL,
       method: method || 'GET',
