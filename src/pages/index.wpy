@@ -60,7 +60,7 @@
     list (state) {
       return state.todo.list
     }
-  },{
+  }, {
     fetchList,
     deleteTodo
   })
@@ -71,7 +71,7 @@
     }
 
     components = {}
-    
+
     data = {}
 
     computed = {}
