@@ -1,0 +1,78 @@
+<style lang="less">
+.input-container {
+  width: 90%;
+  margin-top: 30rpx;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell-input {
+  color: #333;
+  flex-grow: 1;
+  margin: 20rpx 0;
+  height: 75rpx;
+  border-radius: 8rpx;
+  border: 1px solid #ccc;
+  padding: 10rpx;
+}
+</style>
+
+<template>
+  <view class="container">
+    <form class='input-container' bindsubmit="formSubmit">
+      <input class='cell-input' name='content' value='{{editedTodo.content}}'></input>
+      <view>
+        <button formType='submit' type='primary' size="default" loading='{{loading}}'>Edit</button>
+      </view>
+    </form>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import { Todo } from '../store/actions'
+
+  const updateTodo = Todo.updateTodo
+
+  @connect({
+    list (state) {
+      return state.todo.list
+    }
+  }, {
+    updateTodo
+  })
+
+  export default class Edit extends wepy.page {
+    config = {
+      navigationBarTitleText: 'Todo Edit'
+    }
+
+    components = {}
+
+    data = {
+      editedTodo: {},
+      loading: false
+    }
+
+    computed = {}
+
+    methods = {
+      formSubmit (e) {
+        this.loading = true
+        this.methods.updateTodo(this.editedTodo._id, e.detail.value).then((res) => {
+          if (!res.error) {
+            wepy.navigateBack()
+          }
+        })
+      }
+    }
+
+    onLoad(option) {
+      this.editedTodo = this.list.find((t) => {
+        return t._id === option.todoId
+      })
+      this.$apply()
+    }
+  }
+</script>

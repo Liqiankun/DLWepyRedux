@@ -1,0 +1,102 @@
+<style lang="less">
+.cell-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100rpx;
+  width: 90%;
+  border-radius: 10rpx;
+  margin-top: 20rpx;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.cell-container text {
+  margin-left: 15rpx;
+}
+.cell-container view {
+  margin-right: 15rpx;
+}
+
+.cell-container image {
+  width: 40rpx;
+  height: 40rpx;
+}
+
+.cell-container image:first-child {
+  margin-right: 20rpx;
+}
+
+.button-container {
+  width: 90%;
+  margin-top: 30rpx;
+}
+</style>
+<template>
+  <view class="container">
+    <repeat for="{{list}}" key="index" index="index" item="item">
+      <view class='cell-container'>
+        <text>{{item.content}}</text>
+        <view>
+          <image src='../../images/edit.png' mode='aspectFit' @tap='gotoEdit({{item._id}})'/>
+          <image src='../../images/close.png' mode='aspectFit' @tap='removeTodo({{item._id}})'/>
+        </view>
+      </view>
+    </repeat>
+    <view class='button-container'>
+        <button type='primary' size='default' @tap='gotoCreate'>Add Todo</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import Tip from '../utils/tips'
+  import { connect } from 'wepy-redux'
+  import { Todo } from '../store/actions'
+
+  const { fetchList, deleteTodo } = Todo
+
+  @connect({
+    list (state) {
+      return state.todo.list
+    }
+  },{
+    fetchList,
+    deleteTodo
+  })
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: 'Wepy Redux'
+    }
+
+    components = {}
+    
+    data = {}
+
+    computed = {}
+
+    methods = {
+      gotoEdit (id) {
+        wepy.navigateTo({
+          url: `./edit?todoId=${id}`
+        })
+      },
+      gotoCreate () {
+        wepy.navigateTo({
+          url: `./create`
+        })
+      },
+      removeTodo (id) {
+        let self = this
+        Tip.confirm('Delete this todo?', (confirm) => {
+          confirm && self.methods.deleteTodo(id)
+        })
+      }
+    }
+
+    onLoad() {
+      this.methods.fetchList()
+    }
+  }
+</script>

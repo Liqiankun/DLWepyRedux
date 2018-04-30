@@ -1,0 +1,69 @@
+<style lang="less">
+.input-container {
+  width: 90%;
+  margin-top: 30rpx;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell-input {
+  color: #333;
+  flex-grow: 1;
+  margin: 20rpx 0;
+  height: 75rpx;
+  border-radius: 8rpx;
+  border: 1px solid #ccc;
+  padding: 10rpx;
+}
+</style>
+
+<template>
+  <view class="container">
+    <form class='input-container' bindsubmit="formSubmit">
+      <input class='cell-input' name='content'></input>
+      <view>
+        <button formType='submit' type='primary' size="default" loading='{{loading}}'>Create</button>
+      </view>
+    </form>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import { Todo } from '../store/actions'
+
+  const createTodo = Todo.createTodo
+
+  @connect({}, {
+    createTodo
+  })
+
+  export default class Create extends wepy.page {
+    config = {
+      navigationBarTitleText: 'Todo Create'
+    }
+
+    components = {}
+
+    data = {
+      loading: false
+    }
+
+    computed = {}
+
+    methods = {
+      formSubmit (e) {
+        this.loading = true
+        this.methods.createTodo(e.detail.value).then((res) => {
+          if (!res.error) {
+            wepy.navigateBack()
+          }
+        })
+      }
+    }
+
+    onLoad(option) {
+    }
+  }
+</script>
