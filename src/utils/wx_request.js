@@ -24,14 +24,7 @@ export default class WXRequest {
         error.statusCode = res.statusCode
         error.code = res.data.code
         error.message = res.data.error
-        if (res.statusCode === 401) {
-          wepy.reLaunch({
-            url: '../pages/home'
-          })
-        }
-        if (url !== '/blogger_api/shipments' && url !== '/blogger_api/cart_items') {
-          Tips.error(error.message)
-        }
+        Tips.error(error.message)
         throw error
       }
     })
